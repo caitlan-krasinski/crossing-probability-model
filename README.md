@@ -4,10 +4,12 @@ My name is Caitlan and I am an undergraduate Engineering student at the Universi
 
 Please see the `Technical and build details` section at the bottom of this README for requirements and build details
 
+The deployed app can be found at this link: https://caitlan-krasinski-crossing-probability-model-crossing-ui-41rlu3.streamlitapp.com
+
 ## Purpose and Motivation
 This project was inspired by the paper, [The quest for the right pass](http://statsbomb.com/wp-content/uploads/2021/11/Javier-M-Buldu.pdf) from the 2021 StatsBomb conference, and this paper, [Identifying Completed Pass Types and Improving Passing Lane Models](https://cs.uwaterloo.ca/~brecht/papers/passing-linhac-2022.pdf) from the Cheriton School of Computer Science. I decided to simplify scope and only look at cross passes for the purpose of this project. 
 
-This tool was built to help coaching staff analyze and identify optimal cross locations based on their risk tolerance. The deployed app can be found at this link: https://caitlan-krasinski-crossing-probability-model-crossing-ui-41rlu3.streamlitapp.com
+In a journal article about the effectiveness of crosses [^1], it details that crosses are often left incomplete, meaning the scoring chance is lost, yet, teams are still choosing to make these kinds of passes. This tool was built to help coaching staff analyze and identify optimal cross locations based on their risk tolerance so they can make informed coaching decisions on how to best utilize cross events. 
 
 ## Solution
 This tool is contained in a simple UI for coaches to analyze historical cross events. 
@@ -57,5 +59,8 @@ Nothing really needs to be built as you can just browse the web app or notebooks
 If you did want to deploy the app locally, you can run `streamlit run crossing_ui.py` from the repo directory. 
 
 
-<br>
+<br></br>
 Thank you for reading and reviewing my project! 
+<br></br>
+#
+[^1] Research, S. (2020, May 11). Crossing: An effective strategy?: Stats &amp; analysis. Soccerment. Retrieved July 29, 2022, from https://soccerment.com/crossing-effective-strategy/ 
