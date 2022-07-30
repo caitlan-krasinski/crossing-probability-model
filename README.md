@@ -2,7 +2,6 @@
 Hello and welcome to my Women in Sports Data Hackathon project! 
 My name is Caitlan and I am an undergraduate Engineering student at the University of Waterloo. I was so happy to be able to blend my curiosity in data science with my love of sports for this hackathon! I thank you in advance for reading and reviewing my submission. 
 
-<br>
 Please see the `Technical and build details` section at the bottom of this README for requirements and build details
 
 ## Purpose and Motivation
