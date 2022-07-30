@@ -52,7 +52,7 @@ optimal_zone = 0
 optimal_probs = []
 
 for zone in cross_probs.keys():
-    obj = cross_probs[zone] + (risk_weight)*xG_probs[zone] #+ reward_weight*xG_probs[zone] 
+    obj = cross_probs[zone] + (risk_weight - 0.2)*xG_probs[zone] #+ reward_weight*xG_probs[zone] 
     print(obj)
     if maximum < obj:
         maximum = obj
@@ -80,3 +80,4 @@ risk-taker and value a potential high reward, you would input a higher risk tole
 of a successful cross and the corresponding xG if that cross is a success. This model assumes that crosses are made to 
 generate scoring chances, thus the reward in this model is xG. Since crosses are often made to space,
  the optimal zone is highlighted to identify which cross is ideal given the user's risk tolerance.''')
+st.write('''Note that the model only suggests a cross destination if there is support in that zone (ie: at least one teammate)''')
