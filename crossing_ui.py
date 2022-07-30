@@ -26,6 +26,9 @@ for id, row in matches.iterrows():
     display_name = f'{list(match.home_team)[0]} v. {list(match.away_team)[0]} - {list(match.match_date)[0]} (match_id: {list(match.match_id)[0]})'
     match_names.append(display_name)
 
+# title
+st.sidebar.title('Cross Probability Tool')
+
 # match dropdown
 match_option = st.sidebar.selectbox('Select match', match_names)
 
@@ -38,14 +41,12 @@ cross_option = st.sidebar.selectbox('Select cross', cross_ids)
 
 # weight sliders
 risk_weight = st.sidebar.slider('risk tolerance', min_value=0.0, max_value=1.0, value=0.5, step=0.05)
-# reward_weight = 1- risk_weight
-# reward_weight = st.sidebar.slider('reward', min_value=0.0, max_value=1.0, value=1-risk_weight, step=0.05)
-
 
 # process cross
 data_freeze_frame = cross.create_freeze_frames(match_data, cross_option)
 xG_probs, cross_probs = cross.get_probs(data_freeze_frame)
 
+# determine optimal destination zone for cross  
 maximum = 0
 optimal_zone = 0
 optimal_probs = []
@@ -58,6 +59,7 @@ for zone in cross_probs.keys():
         optimal_zone = zone 
         optimal_probs = [cross_probs[zone], xG_probs[zone]]
 
+# draw and output plot 
 if optimal_probs != []:
     st.write(f'Cross probability: {optimal_probs[0]}')
     st.write(f'xG gain from completed cross: {optimal_probs[1]}')
@@ -66,4 +68,4 @@ if optimal_probs != []:
     cross_plot = plot.generate_plot(data_freeze_frame, optimal_zone, cross_probs, xG_probs)
     st.pyplot(cross_plot)
 else:
-    st.write(f'Model did not identify a probable cross')
+    st.write(f'Model did not identify a desirable cross')

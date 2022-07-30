@@ -1,3 +1,6 @@
+# file retrieves event dataframe given the passed match_id
+# using the statsbomb python package 
+
 from statsbombpy import sb
 import pandas as pd 
 

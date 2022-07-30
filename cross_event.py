@@ -1,3 +1,7 @@
+# This file generates the freeze frame df for the passed cross id 
+# and then calculates and returns the xG and expected cross probabilities 
+# for each potential cross section 
+
 import pandas as pd
 from pickle import load
 from math import dist
@@ -8,6 +12,7 @@ from sklearn.linear_model import LogisticRegression
 cross_prob = load(open("models/cross_model.pkl",'rb'))
 xG = load(open("models/xG_historical_probs.pkl",'rb'))
 
+# zone label mapping 
 mapping = {'RF': 0,
           'LF': 1,
           'RB': 2,
@@ -15,6 +20,7 @@ mapping = {'RF': 0,
           'LB': 4,
           'TOB': 5}
 
+# Identifies the section / zone based on the x,y coordinates 
 def section(x,y):
     if (x <= 60 and y <= 18) or (x >= 60 and y >= 62):
         return 'RF'
@@ -30,6 +36,7 @@ def section(x,y):
         return 'TOB'
 
 
+# Generate freeze frame for each cross event, much like you the shot_freeze_frame from shot events 
 def create_freeze_frames(match_data, cross_id):
     x_locs, y_locs, origin_sections, freeze_frames, ids =  [], [], [], [], []
     df = match_data[match_data['id'] == cross_id]
@@ -57,6 +64,7 @@ def create_freeze_frames(match_data, cross_id):
     input_data = pd.DataFrame(data=d)
     return input_data
 
+# pro
 def get_probs(cross):
     cross_probs = {}
     xG_probs = {}
@@ -76,15 +84,16 @@ def get_probs(cross):
                 #count how many opponents are within 3 yards of player making the cross
                 if ((cross_x - player_x)**2 + (cross_y - player_y)**2) <= 3**2 and (player['teammate'] == False) and (player['position']['name'] != 'Goalkeeper'):
                     pressure += 1
-            
+                # count number of teammates in destination zone 
                 if player['teammate'] == True:
                     if mapping[section(player_x, player_y)] == cross_dest:
                         tm_count+=1
+                # count number of opponents in destination zone 
                 else:
                     if mapping[section(player_x, player_y)] == cross_dest:
                         opp_count+=1
             
-            if tm_count == 0: # consider a zone with no teammates a bad zone to cross to 
+            if tm_count == 0: # consider a zone with NO teammates a bad zone to cross to 
                 xG_probs[zone] = 0
                 cross_probs[zone] = 0
             else:
