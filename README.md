@@ -9,12 +9,12 @@ The deployed app can be found at this link: https://caitlan-krasinski-crossing-p
 ## Purpose and Motivation
 This project was inspired by the paper, [The quest for the right pass](http://statsbomb.com/wp-content/uploads/2021/11/Javier-M-Buldu.pdf) from the 2021 StatsBomb conference, and this paper, [Identifying Completed Pass Types and Improving Passing Lane Models](https://cs.uwaterloo.ca/~brecht/papers/passing-linhac-2022.pdf) from the Cheriton School of Computer Science. I decided to simplify scope and only look at cross passes for the purpose of this project. 
 
-In a journal article about the effectiveness of crosses [^1], it details that crosses are often left incomplete, meaning the scoring chance is lost, yet, teams are still choosing to make these kinds of passes. This tool was built to help coaching staff analyze and identify optimal cross locations based on their risk tolerance so they can make informed coaching decisions on how to best utilize cross events. 
+In a journal article about the effectiveness of crosses[^1], it details that crosses are often left incomplete, meaning the scoring chance is lost, yet, teams are still choosing to make these kinds of passes. This tool was built to help coaching staff analyze and identify optimal cross locations based on their risk tolerance so they can make informed coaching decisions on how to best utilize cross events. 
 
 ## Solution
 This tool is contained in a simple UI for coaches to analyze historical cross events. 
 
-The components of this tool is comprised of a classification model to predict the probability of a successful cross, a probability model to quantify the potential xG of a resultant cross and a simple optimization model. 
+This tool is comprised of a classification model to predict the probability of a successful cross, a probability model to quantify the potential xG of a resultant cross and a simple optimization model to tie these two models together. 
 
 All exploratory analysis and model building can be found in the `notebooks` folder for further details on the models used for each component. 
 
@@ -23,8 +23,8 @@ All exploratory analysis and model building can be found in the `notebooks` fold
 The risk tolerance is a way to assess the tradeoff between risk and reward. Since riskier crosses often reap greater rewards, I needed a way penalize high xG's that dominate the cross probabilty for when a coach values completed crosses and maintained possession over bold passes. The `additional_risk_penalty` is to further penalize xG as it has such extreme ranges. 
 
 Various simplifications were made to the model. For instance, I only considered zones as cross destinations rather than individual teammate locations. This is becasue my understanding of crosses is that they are made to space rather than directly to foot. This may be an over simplification but the model can be extended in the future to look at specific teammate location. 
-Another assumption is that the crosses are assumed to be made a height. Majority of historical crosses are made high in the air so this seemed like a reasonable assumtion to make. By making this assumption, it simplified the overall model as we did not need to account for the risk of interception anywhere between the origin zone and the destination zone or add the additional input of height. If we accounted for pass height, we would need differentiate the probability of interception from a ground level cross vs one high in the air that traverses over players rather than through.   
-Additionally, the model only suggests a cross destination if there is support in that zone (ie: at least one teammate). This is naive in a way because players can run onto the ball but for simplicity empty zones are avoided. 
+Another assumption is that the crosses are assumed to be made high off the ground. Majority of historical crosses are made high in the air so this seemed like a reasonable assumtion to make. By making this assumption, it simplified the overall model as we did not need to account for the risk of interception anywhere between the origin zone and the destination zone or add the additional input of height. If we accounted for pass height, we would need to differentiate the probability of interception from a ground level cross vs one high in the air that traverses over players rather than through.   
+Additionally, the model only suggests a cross destination if there is support in that zone (ie: at least one teammate). This is naive in a way because players can run onto the ball but for simplicity, empty zones are avoided. 
 
 For the UI, the analysis is currently limited to historical events. Ideally I would have liked to build a UI where the user can place their team and opponenets on the plot and work out different scenarios, but given my limited app development experience this was not possibile for me in the time I had.
 Each output shows the probability of a successful cross and the corresponding xG if that cross is a success. This model assumes that crosses are made to generate scoring chances, thus the reward in this model is xG. Since crosses are often made to space, the optimal *zone* is highlighted to identify which cross is ideal given the user's risk tolerance.
@@ -35,13 +35,13 @@ THe UI is a bit slow when flipping between cross events, runtime was not a prior
 As mentioned, this tool was built to help coaching staff analyze and identify optimal cross locations based on their risk tolerance.
 
 This tool could be used post game to analyze if crosses the team made were optimal to them and generated the best chance at scoring while still ensuring they are successful. 
-If, as a coach, you prefer to make the sure bets to keep possesion, you may input your risk tolerance lower so that the optimization model knows you value completed crosses over potential high rewards. Conversely, if you are a risk-taker and value a potential high reward, you would input a higher risk tolerance.
+If, as a coach, you prefer to make the sure bets to keep possession, you may input your risk tolerance lower so that the optimization model knows you value completed crosses over potential high rewards. Conversely, if you are a risk-taker and value a potential high reward, you would input a higher risk tolerance.
 
 ## Difficulties and challenges
-A major challenge I encountered was the limited data available for robust model training. I am still a novice when it comes to ML and finding ways to improve my models was a challenge. I think a main issue was that there are reletively few cross events in a game so there is less data to train on and cathc patterns for. This meant my cross probability model did not quite have the performance I desired but it was *good enough* for the proof of concept. 
+A major challenge I encountered was the limited data available for robust model training. I am still a novice when it comes to ML and finding ways to improve my models was a challenge. I think a main issue was that there are reletively few cross events in a game so there is less data to train on and catch patterns for. This meant my cross probability model did not quite have the performance I desired but it was *good enough* for the proof of concept. 
 Likewise, I had so few goal events that traning an xG model was challenging, given the lack of data and unbalanced nature in the classes, the model had an oversimplification issue where it more often than not, defaulted to classifying the shot as *no goal*. I couldn't find a way to finetune it in time so I resorted to using historical probabilities and using conditional probability to identify the probability of a goal from a specified zone, given the pressure in that zone (you can see further details in [this notebook](https://github.com/caitlan-krasinski/crossing-probability-model/blob/main/notebooks/xG_via_historical_prob.ipynb). 
 Additionally, as mentioned earlier, I really wanted my model to come with a UI for interactive analysis. As a novice developer, the UI is quite simple and limited with what you can do with it, but luckily the `Streamlit` package made it possible. 
-Lastly, the challenge of being a full time student on a study term also made it hard at times. I had high hopes for this project but time wasn't always on my side, that is why I found ways to simplify the project so I could get a completed project at the end of it. IN the end I am happy with my end solution and am proud of the work I put into it. 
+Lastly, the challenge of being a full time student on a study term also made it hard at times. I had high hopes for this project but time wasn't always on my side, that is why I found ways to simplify the project so I could get a completed project at the end of it. In the end I am happy with my end solution and am proud of the work I put into it. 
 
 
 ## Technical and build details 
@@ -63,4 +63,8 @@ If you did want to deploy the app locally, you can run `streamlit run crossing_u
 Thank you for reading and reviewing my project! 
 <br></br>
 #
-[^1] Research, S. (2020, May 11). Crossing: An effective strategy?: Stats &amp; analysis. Soccerment. Retrieved July 29, 2022, from https://soccerment.com/crossing-effective-strategy/ 
+[^1]: Research, S. (2020, May 11). Crossing: An effective strategy?: Stats &amp; analysis. Soccerment. Retrieved July 29, 2022, from https://soccerment.com/crossing-effective-strategy/ 
+
+<!-- Here is a simple footnote[^1]. With some additional text after it.
+
+[^1]: My reference. -->
