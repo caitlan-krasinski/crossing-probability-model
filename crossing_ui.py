@@ -69,3 +69,14 @@ if optimal_probs != []:
     st.pyplot(cross_plot)
 else:
     st.write(f'Model did not identify a desirable cross')
+
+
+st.write('''Welcome to the Cross Probability Tool! This tool was built to 
+help coaching staff analyze and identify optimal cross locations based on their risk tolerance. Feel free to 
+browse historical games and flip through different cross events.''')
+st.write('''If, as a coach, you prefer to make the sure bets to keep possesion, you may input your risk tolerance 
+lower so that the optimization model knows you value completed crosses over potential high rewards. Conversely, if you are a 
+risk-taker and value a potential high reward, you would input a higher risk tolerance. Each output shows the probability 
+of a successful cross and the corresponding xG if that cross is a success. This model assumes that crosses are made to 
+generate scoring chances, thus the reward in this model is xG. Since crosses are often made to space,
+ the optimal zone is highlighted to identify which cross is ideal given the user's risk tolerance.''')
