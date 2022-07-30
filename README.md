@@ -2,6 +2,9 @@
 Hello and welcome to my Women in Sports Data Hackathon project! 
 My name is Caitlan and I am an undergraduate Engineering student at the University of Waterloo. I was so happy to be able to blend my curiosity in data science with my love of sports for this hackathon! I thank you in advance for reading and reviewing my submission. 
 
+<br>
+Please see the `Technical and build details` section at the bottom of this README for requirements and build details
+
 ## Purpose and Motivation
 This project was inspired by the paper, [The quest for the right pass](http://statsbomb.com/wp-content/uploads/2021/11/Javier-M-Buldu.pdf) from the 2021 StatsBomb conference, and this paper, [Identifying Completed Pass Types and Improving Passing Lane Models](https://cs.uwaterloo.ca/~brecht/papers/passing-linhac-2022.pdf) from the Cheriton School of Computer Science. I decided to simplify scope and only look at cross passes for the purpose of this project. 
 
