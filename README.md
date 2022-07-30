@@ -22,6 +22,11 @@ All exploratory analysis and model building can be found in the `notebooks` fold
 
 The risk tolerance is a way to assess the tradeoff between risk and reward. Since riskier crosses often reap greater rewards, I needed a way penalize high xG's that dominate the cross probabilty for when a coach values completed crosses and maintained possession over bold passes. The `additional_risk_penalty` is to further penalize xG as it has such extreme ranges. 
 
+For example, with a lower risk tolerance, the safer cross is suggested: <img width="1256" alt="Screen Shot 2022-07-29 at 8 20 01 PM" src="https://user-images.githubusercontent.com/60022257/181925349-c78e5f49-467a-4dbf-8a7c-64cf5f09692f.png">
+
+Whereas, for a higher risk tolerance, the higer gain cross is suggested:<img width="1262" alt="Screen Shot 2022-07-29 at 8 20 16 PM" src="https://user-images.githubusercontent.com/60022257/181925425-9a305283-5a93-4854-b7b0-0b3134751a54.png">
+
+
 Various simplifications were made to the model. For instance, I only considered zones as cross destinations rather than individual teammate locations. This is becasue my understanding of crosses is that they are made to space rather than directly to foot. This may be an over simplification but the model can be extended in the future to look at specific teammate location. 
 Another assumption is that the crosses are assumed to be made high off the ground. Majority of historical crosses are made high in the air so this seemed like a reasonable assumtion to make. By making this assumption, it simplified the overall model as we did not need to account for the risk of interception anywhere between the origin zone and the destination zone or add the additional input of height. If we accounted for pass height, we would need to differentiate the probability of interception from a ground level cross vs one high in the air that traverses over players rather than through.   
 Additionally, the model only suggests a cross destination if there is support in that zone (ie: at least one teammate). This is naive in a way because players can run onto the ball but for simplicity, empty zones are avoided. 
