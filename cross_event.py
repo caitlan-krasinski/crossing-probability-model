@@ -85,13 +85,14 @@ def get_probs(cross):
                 if ((cross_x - player_x)**2 + (cross_y - player_y)**2) <= 3**2 and (player['teammate'] == False) and (player['position']['name'] != 'Goalkeeper'):
                     pressure += 1
                 # count number of teammates in destination zone 
-                if player['teammate'] == True:
-                    if mapping[section(player_x, player_y)] == cross_dest:
-                        tm_count+=1
-                # count number of opponents in destination zone 
-                else:
-                    if mapping[section(player_x, player_y)] == cross_dest:
-                        opp_count+=1
+                if player_x > 90:
+                    if player['teammate'] == True:
+                        if mapping[section(player_x, player_y)] == cross_dest:
+                            tm_count+=1
+                    # count number of opponents in destination zone 
+                    else:
+                        if mapping[section(player_x, player_y)] == cross_dest:
+                            opp_count+=1
             
             if tm_count == 0: # consider a zone with NO teammates a bad zone to cross to 
                 xG_probs[zone] = 0

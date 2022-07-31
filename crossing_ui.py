@@ -53,7 +53,6 @@ optimal_probs = []
 
 for zone in cross_probs.keys():
     obj = cross_probs[zone] + (risk_weight - 0.2)*xG_probs[zone] #+ reward_weight*xG_probs[zone] 
-    print(obj)
     if maximum < obj:
         maximum = obj
         optimal_zone = zone 
