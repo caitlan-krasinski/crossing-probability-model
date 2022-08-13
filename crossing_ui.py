@@ -34,16 +34,29 @@ match_option = st.sidebar.selectbox('Select match', match_names)
 
 selected_match_id = match_option.split('match_id: ')[1].strip(')')
 
-# cross_id dropdown 
+# get match data 
 match_data = dr.get_match_data(selected_match_id)
-cross_ids = match_data.id.unique()
-cross_option = st.sidebar.selectbox('Select cross', cross_ids)
+
+# team dropdown
+team_select = st.sidebar.selectbox('Select Team', list(match_data.team.unique()))
+
+# convert cross_ids to descriptive events
+team_data = match_data[match_data['team'] == team_select].sort_values(by=['timestamp'])
+
+desc_to_id = {}
+for cross_id in team_data.id.unique():
+    row = team_data[team_data['id'] == cross_id].iloc[0]
+    description = f'{row.player} ({row.timestamp})'
+    desc_to_id[description] = row.id
+
+cross_option = st.sidebar.selectbox('Select cross', desc_to_id.keys())
+cross_id = desc_to_id[cross_option]
 
 # weight sliders
 risk_weight = st.sidebar.slider('risk tolerance', min_value=0.0, max_value=1.0, value=0.5, step=0.05)
 
 # process cross
-data_freeze_frame = cross.create_freeze_frames(match_data, cross_option)
+data_freeze_frame = cross.create_freeze_frames(match_data, cross_id)
 xG_probs, cross_probs = cross.get_probs(data_freeze_frame)
 
 # determine optimal destination zone for cross  
@@ -58,6 +71,7 @@ for zone in cross_probs.keys():
         optimal_zone = zone 
         optimal_probs = [cross_probs[zone], xG_probs[zone]]
 
+st.write(f'**{cross_option}**')
 # draw and output plot 
 if optimal_probs != []:
     st.write(f'Cross probability: {optimal_probs[0]}')
