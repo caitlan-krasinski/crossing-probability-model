@@ -77,6 +77,7 @@ risk_weight = st.sidebar.slider('risk tolerance', min_value=0.0, max_value=1.0, 
 data_freeze_frame = cross.create_freeze_frames(match_data, cross_id)
 xG_probs, cross_probs = cross.get_probs(data_freeze_frame, cross_prob, xG)
 
+
 # determine optimal destination zone for cross  
 maximum = 0
 optimal_zone = 0
