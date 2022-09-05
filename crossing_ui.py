@@ -1,6 +1,7 @@
 # general imports
 import pandas as pd 
 import matplotlib.pyplot as plt
+from pickle import load
 
 # football imports
 from statsbombpy import sb
@@ -15,7 +16,27 @@ import plotting_functions as plot
 import streamlit as st
 
 
-matches = sb.matches(competition_id=55, season_id=43)
+# title
+st.sidebar.title('Cross Probability Tool')
+
+# tournament dropdown
+gender_option = st.sidebar.selectbox('Select tournament', ["2020 Men's Euro", "2022 Women's Euro"])
+
+if gender_option == "2020 Mens's Euro":
+    comp_id = 55
+    s_id = 43
+    # load models
+    cross_prob = load(open("models/cross_model.pkl",'rb'))
+    xG = load(open("models/xG_historical_probs.pkl",'rb'))
+else:
+    comp_id = 53
+    s_id = 106
+    # load models
+    cross_prob = load(open("models/cross_model_womens_euros.pkl",'rb'))
+    xG = load(open("models/xG_historical_probs_womens_euros.pkl",'rb'))
+
+
+matches = sb.matches(competition_id=comp_id, season_id=s_id)
 matches = matches[matches['match_status_360'] == 'available'].sort_values(by=['match_date'])
 
 match_names = []
@@ -25,9 +46,6 @@ for id, row in matches.iterrows():
     match = matches[matches['match_id'] == match_id]
     display_name = f'{list(match.home_team)[0]} v. {list(match.away_team)[0]} - {list(match.match_date)[0]} (match_id: {list(match.match_id)[0]})'
     match_names.append(display_name)
-
-# title
-st.sidebar.title('Cross Probability Tool')
 
 # match dropdown
 match_option = st.sidebar.selectbox('Select match', match_names)
@@ -57,7 +75,7 @@ risk_weight = st.sidebar.slider('risk tolerance', min_value=0.0, max_value=1.0, 
 
 # process cross
 data_freeze_frame = cross.create_freeze_frames(match_data, cross_id)
-xG_probs, cross_probs = cross.get_probs(data_freeze_frame)
+xG_probs, cross_probs = cross.get_probs(data_freeze_frame, cross_prob, xG)
 
 # determine optimal destination zone for cross  
 maximum = 0

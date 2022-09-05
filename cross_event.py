@@ -7,11 +7,6 @@ from pickle import load
 from math import dist
 from sklearn.linear_model import LogisticRegression
 
-
-# load models
-cross_prob = load(open("models/cross_model.pkl",'rb'))
-xG = load(open("models/xG_historical_probs.pkl",'rb'))
-
 # zone label mapping 
 mapping = {'RF': 0,
           'LF': 1,
@@ -65,7 +60,7 @@ def create_freeze_frames(match_data, cross_id):
     return input_data
 
 # pro
-def get_probs(cross):
+def get_probs(cross, cross_prob, xG):
     cross_probs = {}
     xG_probs = {}
     for zone in mapping.values():
