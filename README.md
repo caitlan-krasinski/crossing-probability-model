@@ -6,6 +6,8 @@ Please see the `Technical and build details` section at the bottom of this READM
 
 The deployed app can be found at this link: https://caitlan-krasinski-crossing-probability-model-crossing-ui-41rlu3.streamlitapp.com
 
+Update (09-05-2022): Exciting news, the tool now includes data for the Women's 2022 Euro tournament, to be presented at the 2022 StatsBomb conference! 
+
 ## Purpose and Motivation
 This project was inspired by the paper, [The quest for the right pass](http://statsbomb.com/wp-content/uploads/2021/11/Javier-M-Buldu.pdf) from the 2021 StatsBomb conference, and this paper, [Identifying Completed Pass Types and Improving Passing Lane Models](https://cs.uwaterloo.ca/~brecht/papers/passing-linhac-2022.pdf) from the Cheriton School of Computer Science. I decided to simplify scope and only look at cross passes for the purpose of this project. 
 
