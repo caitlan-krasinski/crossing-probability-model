@@ -25,7 +25,7 @@ label_coordinates = {0: [111,71],
                     5: [93,40]}
 
 # draw plot 
-def generate_plot(cross, optimal_zone, cross_probs, xG_probs):
+def generate_plot(cross, optimal_zone, cross_probs, xG_probs, actual_end_zone):
     pitch = Pitch()
 
     fig, ax = pitch.draw(figsize=(10,8))
@@ -47,10 +47,12 @@ def generate_plot(cross, optimal_zone, cross_probs, xG_probs):
         pitch.polygon([left_zone_coordinates[optimal_zone]], color=(1, 0, 0, 0.3), ax=ax ) # optimal section 
         for zone in cross_probs.keys():
             pitch.polygon([left_zone_coordinates[zone]], edgecolor='red', ax=ax )
+        pitch.polygon([left_zone_coordinates[actual_end_zone]], edgecolor='blue', ax=ax )
     else:
         pitch.polygon([right_zone_coordinates[optimal_zone]], edgecolor='red', linewidth=1, color=(1, 0, 0, 0.3), ax=ax )
         for zone in cross_probs.keys():
             pitch.polygon([right_zone_coordinates[zone]], color=(1, 0, 0,0), ec='red', linewidth=1, ax=ax )
+        pitch.polygon([right_zone_coordinates[actual_end_zone]], color=(0, 0, 1, 0.25), ax=ax)
 
     # plot data labels 
     for zone in cross_probs.keys():

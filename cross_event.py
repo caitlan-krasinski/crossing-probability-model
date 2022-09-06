@@ -33,7 +33,7 @@ def section(x,y):
 
 # Generate freeze frame for each cross event, much like you the shot_freeze_frame from shot events 
 def create_freeze_frames(match_data, cross_id):
-    x_locs, y_locs, origin_sections, freeze_frames, ids =  [], [], [], [], []
+    x_locs, y_locs, origin_sections, freeze_frames, ids, outcomes, end_sections =  [], [], [], [], [], [],[]
     df = match_data[match_data['id'] == cross_id]
     
     frame = []
@@ -43,6 +43,8 @@ def create_freeze_frames(match_data, cross_id):
             y_locs.append(row.location_x[1])
             origin_sections.append(mapping[section(row.location_x[0], row.location_x[1])])
             ids.append(row.id)
+            outcomes.append(row.pass_outcome)
+            end_sections.append(mapping[section(row.pass_end_location[0], row.pass_end_location[1])])
         else:
             freeze_frame = {}
             freeze_frame['location'] = row.location_x
@@ -54,7 +56,7 @@ def create_freeze_frames(match_data, cross_id):
     freeze_frames.append(frame)
     
     d = {'loc_x': x_locs, 'loc_y': y_locs, 'origin_section': origin_sections,
-        'freeze_frame': freeze_frames, 'id':ids }
+        'freeze_frame': freeze_frames, 'id':ids, 'actual_end_zone': end_sections, 'outcome': outcomes}
 
     input_data = pd.DataFrame(data=d)
     return input_data
@@ -101,4 +103,4 @@ def get_probs(cross, cross_prob, xG):
                 else: i=2                      # more than 3 opps in zone
                 xG_probs[zone] = round(xG[i][cross_dest] / sum(xG[i]),3)
 
-    return xG_probs, cross_probs
+    return xG_probs, cross_probs, list(cross.actual_end_zone)[0], list(cross.outcome)[0]

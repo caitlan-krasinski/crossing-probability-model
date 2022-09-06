@@ -22,7 +22,7 @@ st.sidebar.title('Cross Probability Tool')
 # tournament dropdown
 gender_option = st.sidebar.selectbox('Select tournament', ["2020 Men's Euro", "2022 Women's Euro"])
 
-if gender_option == "2020 Mens's Euro":
+if gender_option == "2020 Men's Euro":
     comp_id = 55
     s_id = 43
     # load models
@@ -75,8 +75,7 @@ risk_weight = st.sidebar.slider('risk tolerance', min_value=0.0, max_value=1.0, 
 
 # process cross
 data_freeze_frame = cross.create_freeze_frames(match_data, cross_id)
-xG_probs, cross_probs = cross.get_probs(data_freeze_frame, cross_prob, xG)
-
+xG_probs, cross_probs, actual_end_zone, actual_outcome = cross.get_probs(data_freeze_frame, cross_prob, xG)
 
 # determine optimal destination zone for cross  
 maximum = 0
@@ -84,7 +83,7 @@ optimal_zone = 0
 optimal_probs = []
 
 for zone in cross_probs.keys():
-    obj = cross_probs[zone] + (risk_weight - 0.2)*xG_probs[zone] #+ reward_weight*xG_probs[zone] 
+    obj = cross_probs[zone] + (risk_weight - 0.2)*xG_probs[zone]
     if maximum < obj:
         maximum = obj
         optimal_zone = zone 
@@ -93,19 +92,25 @@ for zone in cross_probs.keys():
 st.write(f'**{cross_option}**')
 # draw and output plot 
 if optimal_probs != []:
-    st.write(f'Cross probability: {optimal_probs[0]}')
-    st.write(f'xG gain from completed cross: {optimal_probs[1]}')
+    if actual_outcome == 'Incomplete':
+        st.write(f'Actual cross outcome: Incomplete')
+    else: 
+        st.write(f'Actual cross outcome: Completed')
+    # st.write(f'**Predicted cross values:**')
+    # st.write(f'Cross probability: {optimal_probs[0]}')
+    # st.write(f'xG gain from completed cross: {optimal_probs[1]}')
 
     # plot
-    cross_plot = plot.generate_plot(data_freeze_frame, optimal_zone, cross_probs, xG_probs)
+    cross_plot = plot.generate_plot(data_freeze_frame, optimal_zone, cross_probs, xG_probs, actual_end_zone)
     st.pyplot(cross_plot)
 else:
     st.write(f'Model did not identify a desirable cross')
 
 
 st.write('''Welcome to the Cross Probability Tool! This tool was built to 
-help coaching staff analyze and identify optimal cross locations based on their risk tolerance. Feel free to 
-browse historical games and flip through different cross events.''')
+help coaching staff analyze and identify optimal cross locations based on their risk tolerance. The zone highlighted in red indicates 
+the predicted/suggested optimal zone, the zone highlighted in blue is where the cross was actually made to, and if the zone 
+is purple it indicates the cross was made to the predicted zone.''')
 st.write('''If, as a coach, you prefer to make the sure bets to keep possesion, you may input your risk tolerance 
 lower so that the optimization model knows you value completed crosses over potential high rewards. Conversely, if you are a 
 risk-taker and value a potential high reward, you would input a higher risk tolerance. Each output shows the probability 
