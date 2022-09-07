@@ -61,7 +61,7 @@ def create_freeze_frames(match_data, cross_id):
     input_data = pd.DataFrame(data=d)
     return input_data
 
-# pro
+# probs 
 def get_probs(cross, cross_prob, xG):
     cross_probs = {}
     xG_probs = {}
